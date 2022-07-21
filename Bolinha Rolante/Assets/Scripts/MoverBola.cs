@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MoverBola : MonoBehaviour
 {
@@ -9,20 +10,38 @@ public class MoverBola : MonoBehaviour
 
     public GameObject particulaItem; // efeito de destruiçao
 
-    public Text textoPontos;
+    public Text scoreText;
     public Text textoFinal;
+    public Text highScoreText;
 
-    private int pontos;
+    public GameObject objetoCanvasScore;
+    public GameObject objetoCanvasHighscore;
+
+    private int score, highscore;
+
     private bool j;
+    private string sceneName;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         //textoFinal.text = "";
         textoFinal.enabled = false;
-        textoPontos.text = textoPontos.text + pontos.ToString();
+        //textoPontos.text = textoPontos.text + pontos.ToString();
         velocidade = 5;
         j = true;
+
+        scoreText.text = "0";
+        objetoCanvasScore.transform.position = new Vector2(Screen.width / 6 - 50, Screen.height -50);
+        objetoCanvasHighscore.transform.position = new Vector2(Screen.width / 6 - 50, Screen.height - 100);
+
+        //Colocando o highscore para ser salvo
+        sceneName = SceneManager.GetActiveScene().name;
+        if (PlayerPrefs.HasKey(sceneName + "score"))
+        {
+            highscore = PlayerPrefs.GetInt(sceneName + "score");
+            highScoreText.text = highscore.ToString();
+        }
     }
 
     void FixedUpdate()
@@ -66,8 +85,15 @@ public class MoverBola : MonoBehaviour
 
     void MarcaPonto()
     {
-        pontos++;
-        textoPontos.text = "Score: " + pontos.ToString();
+        score++;
+        scoreText.text = score.ToString();
+
+        if (score > highscore)
+        {
+            highscore = score;
+            highScoreText.text = highscore.ToString();
+            PlayerPrefs.SetInt(sceneName + "score", highscore);
+        }
     }
 
     void GameOver()
