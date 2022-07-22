@@ -17,19 +17,24 @@ public class MoverBola : MonoBehaviour
     public GameObject objetoCanvasScore;
     public GameObject objetoCanvasHighscore;
 
-    private int score, highscore;
+    private int score, highscore, i;
 
     private bool j;
     private string sceneName;
 
+    public AudioClip impact;
+    AudioSource audioSource;
+
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody>();
         //textoFinal.text = "";
         textoFinal.enabled = false;
         //textoPontos.text = textoPontos.text + pontos.ToString();
         velocidade = 5;
         j = true;
+        i = 0;
 
         scoreText.text = "0";
         objetoCanvasScore.transform.position = new Vector2(Screen.width / 6 - 50, Screen.height -50);
@@ -63,9 +68,16 @@ public class MoverBola : MonoBehaviour
     {
         if (this.gameObject.transform.position.y < -2)
         {
+            i++;
             textoFinal.enabled = true;
             textoFinal.text = "END!!!!";
             Invoke("GameOver", 2); 
+        }
+
+        if (i == 1)
+        {
+            audioSource.PlayOneShot(impact, 5);
+            //textoFinal.GetComponent<AudioSource>().Play();
         }
     }
     void OnTriggerEnter(Collider outro)
@@ -85,6 +97,7 @@ public class MoverBola : MonoBehaviour
 
     void MarcaPonto()
     {
+        GetComponent<AudioSource>().Play();
         score++;
         scoreText.text = score.ToString();
 
