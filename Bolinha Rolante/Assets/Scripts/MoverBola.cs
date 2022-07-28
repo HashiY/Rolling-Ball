@@ -37,8 +37,8 @@ public class MoverBola : MonoBehaviour
         i = 0;
 
         scoreText.text = "0";
-        objetoCanvasScore.transform.position = new Vector2(Screen.width / 6 - 50, Screen.height -50);
-        objetoCanvasHighscore.transform.position = new Vector2(Screen.width / 6 - 50, Screen.height - 100);
+        objetoCanvasScore.transform.position = new Vector2(Screen.width / 6 - 50, Screen.height -100);
+        objetoCanvasHighscore.transform.position = new Vector2(Screen.width / 6 - 50, Screen.height - 50);
 
         //Colocando o highscore para ser salvo
         sceneName = SceneManager.GetActiveScene().name;
